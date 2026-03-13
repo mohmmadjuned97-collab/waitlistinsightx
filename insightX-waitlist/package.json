@@ -1,0 +1,16 @@
+{
+  "name": "insightx-waitlist",
+  "version": "1.0.0",
+  "description": "InsightX Waitlist — Full-stack waitlist with email notifications",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "nodemailer": "^6.9.16",
+    "@supabase/supabase-js": "^2.39.3"
+  }
+}

@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InsightX Waitlist — Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    :root {
+      --bg: #050510;
+      --surface: rgba(255,255,255,0.04);
+      --border: rgba(255,255,255,0.08);
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --indigo: #6366f1;
+      --purple: #a855f7;
+      --cyan: #06b6d4;
+      --grad: linear-gradient(135deg, var(--indigo), var(--purple), var(--cyan));
+      --font: 'Inter', -apple-system, sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .admin-container {
+      width: 100%;
+      max-width: 800px;
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity:0; transform:translateY(20px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+    }
+
+    h1 span {
+      background: var(--grad);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 0.88rem;
+      margin-bottom: 24px;
+    }
+
+    /* Login */
+    .login-card, .data-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      backdrop-filter: blur(24px);
+    }
+
+    .login-card { max-width: 420px; margin: 0 auto; text-align: center; }
+
+    .input-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 20px;
+    }
+
+    input[type="password"], input[type="text"] {
+      flex: 1;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input:focus { border-color: rgba(99,102,241,0.5); }
+
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      background: var(--grad);
+      color: #fff;
+      font-family: var(--font);
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 16px -4px rgba(99,102,241,0.4);
+    }
+
+    .btn:hover { transform:translateY(-1px); box-shadow: 0 6px 24px -4px rgba(99,102,241,0.55); }
+
+    .btn-outline {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      box-shadow: none;
+    }
+
+    .btn-outline:hover { border-color: rgba(255,255,255,0.15); }
+
+    .error { color: #f87171; font-size: 0.82rem; margin-top: 12px; }
+
+    /* Data */
+    .hidden { display: none; }
+
+    .stats {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .stat-card {
+      flex: 1;
+      min-width: 120px;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 1.8rem;
+      font-weight: 800;
+      background: var(--grad);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .stat-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    /* Table */
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+
+    th {
+      background: rgba(0,0,0,0.3);
+      text-align: left;
+      padding: 12px 16px;
+      font-weight: 600;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+    }
+
+    td {
+      padding: 10px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+      color: var(--text);
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    tr:hover td { background: rgba(255,255,255,0.02); }
+
+    .pos-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 36px;
+      padding: 2px 10px;
+      border-radius: 999px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      font-weight: 600;
+      font-size: 0.8rem;
+    }
+
+    .empty { text-align: center; color: var(--muted); padding: 40px 16px; }
+  </style>
+</head>
+<body>
+
+<div class="admin-container">
+  <h1>InsightX <span>Admin</span></h1>
+  <p class="subtitle">Waitlist email management &amp; export</p>
+
+  <!-- Login -->
+  <div class="login-card" id="login-section">
+    <h2 style="font-size:1.1rem;margin-bottom:4px;">🔐 Admin Access</h2>
+    <p style="color:var(--muted);font-size:0.82rem;">Enter your admin password to continue.</p>
+    <div class="input-row">
+      <input type="password" id="pw-input" placeholder="Admin password" />
+      <button class="btn" id="login-btn">Unlock</button>
+    </div>
+    <p class="error hidden" id="login-error">Invalid password. Check your .env file.</p>
+  </div>
+
+  <!-- Data -->
+  <div class="hidden" id="data-section">
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-value" id="total-count">0</div>
+        <div class="stat-label">Total Signups</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="latest-pos">#0</div>
+        <div class="stat-label">Latest Position</div>
+      </div>
+    </div>
+
+    <div class="data-card">
+      <div class="toolbar">
+        <button class="btn btn-outline" id="refresh-btn">↻ Refresh</button>
+        <button class="btn" id="export-btn">📥 Export CSV</button>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Email</th>
+              <th>Joined</th>
+            </tr>
+          </thead>
+          <tbody id="email-table">
+            <tr><td colspan="3" class="empty">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  const pwInput    = document.getElementById('pw-input');
+  const loginBtn   = document.getElementById('login-btn');
+  const loginError = document.getElementById('login-error');
+  const loginSec   = document.getElementById('login-section');
+  const dataSec    = document.getElementById('data-section');
+  const totalCount = document.getElementById('total-count');
+  const latestPos  = document.getElementById('latest-pos');
+  const emailTable = document.getElementById('email-table');
+  const refreshBtn = document.getElementById('refresh-btn');
+  const exportBtn  = document.getElementById('export-btn');
+
+  let adminPw = '';
+
+  async function fetchEmails() {
+    try {
+      const res = await fetch('/api/admin/emails?password=' + encodeURIComponent(adminPw));
+      if (!res.ok) throw new Error('unauthorized');
+      const data = await res.json();
+
+      totalCount.textContent = data.total;
+      latestPos.textContent  = data.total > 0 ? '#' + data.emails[data.emails.length - 1].position : '#0';
+
+      if (data.emails.length === 0) {
+        emailTable.innerHTML = '<tr><td colspan="3" class="empty">No signups yet.</td></tr>';
+        return;
+      }
+
+      emailTable.innerHTML = data.emails.map(e => `
+        <tr>
+          <td><span class="pos-badge">${e.position}</span></td>
+          <td>${e.email}</td>
+          <td style="color:var(--muted);font-size:0.8rem;">${new Date(e.joined_at + 'Z').toLocaleString()}</td>
+        </tr>
+      `).join('');
+    } catch {
+      emailTable.innerHTML = '<tr><td colspan="3" class="empty">Failed to load data.</td></tr>';
+    }
+  }
+
+  async function tryLogin() {
+    adminPw = pwInput.value.trim();
+    if (!adminPw) return;
+
+    const res = await fetch('/api/admin/emails?password=' + encodeURIComponent(adminPw));
+    if (res.ok) {
+      loginSec.classList.add('hidden');
+      dataSec.classList.remove('hidden');
+      fetchEmails();
+    } else {
+      loginError.classList.remove('hidden');
+    }
+  }
+
+  loginBtn.addEventListener('click', tryLogin);
+  pwInput.addEventListener('keydown', e => { if (e.key === 'Enter') tryLogin(); });
+  refreshBtn.addEventListener('click', fetchEmails);
+
+  exportBtn.addEventListener('click', () => {
+    window.open('/api/admin/export?password=' + encodeURIComponent(adminPw));
+  });
+})();
+</script>
+</body>
+</html>
